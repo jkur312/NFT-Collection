@@ -50,7 +50,7 @@ export default function Home() {
   /**
    * publicMint: Mint an NFT after the presale
    */
-  const publicMint = async () => {
+  const withdraw = async () => {
     try {
       // We need a Signer here since this is a 'write' transaction.
       const signer = await getProviderOrSigner(true);
@@ -58,16 +58,16 @@ export default function Home() {
       // update methods
       const nftContract = new Contract(NFT_CONTRACT_ADDRESS, abi, signer);
       // call the mint from the contract to mint the Crypto Dev
-      const tx = await nftContract.mint({
+      const tx = await nftContract.withdraw({
         // value signifies the cost of one crypto dev which is "0.01" eth.
         // We are parsing `0.01` string to ether using the utils library from ethers.js
-        value: utils.parseEther("0.01"),
+        // value: utils.parseEther("0.01"),
       });
       setLoading(true);
       // wait for the transaction to get mined
       await tx.wait();
       setLoading(false);
-      window.alert("You successfully minted a Crypto Dev!");
+      window.alert("You have successfully withdrawn!");
     } catch (err) {
       console.error(err);
     }
@@ -336,10 +336,10 @@ export default function Home() {
     }
 
     // If presale started and has ended, it's time for public minting
-    if (presaleStarted && presaleEnded) {
+    if (isOwner && presaleStarted && presaleEnded) {
       return (
-        <button className={styles.button} onClick={publicMint}>
-          Public Mint 🚀
+        <button className={styles.button} onClick={withdraw}>
+          withdraw 🚀
         </button>
       );
     }
