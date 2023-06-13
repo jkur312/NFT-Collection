@@ -336,7 +336,7 @@ export default function Home() {
     }
 
     // If presale started and has ended, it's time for public minting
-    if (isOwner && presaleStarted && presaleEnded) {
+    if (isOwner) {
       return (
         <button className={styles.button} onClick={withdraw}>
           withdraw 🚀
