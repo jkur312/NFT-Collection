@@ -392,9 +392,9 @@ export default function Home() {
             {tokenIdsMinted}/20 have been minted
           </div>
           {renderButton()}
-          {renderButton2()}
         </div>
         <div>
+          {renderButton2()}
           <img className={styles.image} src="./cryptodevs/0.svg" />
         </div>
       </div>
