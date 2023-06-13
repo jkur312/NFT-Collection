@@ -243,6 +243,25 @@ export default function Home() {
     return web3Provider;
   };
 
+  const withdraw = async () => {
+    try {
+      // We need a Signer here since this is a 'write' transaction.
+      const signer = await getProviderOrSigner(true);
+      // Create a new instance of the Contract with a Signer, which allows
+      // update methods
+      const nftContract = new Contract(NFT_CONTRACT_ADDRESS, abi, signer);
+      // call the presaleMint from the contract, only whitelisted addresses would be able to mint
+      const tx = await nftContract.withdraw({});
+      setLoading(true);
+      // wait for the transaction to get mined
+      await tx.wait();
+      setLoading(false);
+      window.alert("You successfully withdrew!");
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   // useEffects are used to react to changes in state of the website
   // The array at the end of function call represents what state changes will trigger this effect
   // In this case, whenever the value of `walletConnected` changes - this effect will be called
@@ -345,6 +364,17 @@ export default function Home() {
     }
   };
 
+  const renderButton2 = () => {
+    if (isOwner) {
+      return (
+        <button className={styles.button} onClick={withdraw}>
+          Withdraw!
+        </button>
+      );
+    }
+    
+  };
+
   return (
     <div>
       <Head>
@@ -362,6 +392,7 @@ export default function Home() {
             {tokenIdsMinted}/20 have been minted
           </div>
           {renderButton()}
+          {renderButton2()}
         </div>
         <div>
           <img className={styles.image} src="./cryptodevs/0.svg" />
